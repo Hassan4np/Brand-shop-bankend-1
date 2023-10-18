@@ -25,8 +25,33 @@ async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
+        const database = client.db("productsDB");
+        const ProductCollection = database.collection("products");
         //start out Project-->
 
+        app.get('/products', async(req, res) => {
+                const couser = ProductCollection.find();
+                const result = await couser.toArray()
+                res.send(result)
+            })
+            // app.get('/products/:id', async(req, res) => {
+            //     const item = req.params.id;
+            //     // const query = { _id: new ObjectId(item) };
+            //     const query = {
+            //         Brand: item
+            //     };
+            //     const couser = ProductCollection.find(query);
+            //     const result = couser.toArray();
+            //     res.send(result)
+
+        // })
+
+        app.post('/products', async(req, res) => {
+            const productitem = req.body;
+            console.log(productitem)
+            const result = await ProductCollection.insertOne(productitem);
+            res.send(result);
+        })
 
 
 
@@ -43,7 +68,7 @@ run().catch(console.dir);
 
 
 app.get('/', (req, res) => {
-    res.send('Hello World!')
+    res.send('Hello World! i am hassan')
 })
 
 app.listen(port, () => {
