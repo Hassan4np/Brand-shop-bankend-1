@@ -35,17 +35,8 @@ async function run() {
             res.send(result)
         });
 
-        // app.get('/products/:Brand', async(req, res) => {
-        //     const id = req.params.Brand;
-        //     const query = { Brand: id };
-        //     const couser = ProductCollection.find(query);
-        //     const result = await couser.toArray()
-        //     res.send(result)
-        // });
-
         app.get('/products/:id', async(req, res) => {
             const id = req.params.id;
-            console.log(id)
             const query = { _id: new ObjectId(id) };
             const result = await ProductCollection.findOne(query);
             res.send(result)
@@ -63,14 +54,12 @@ async function run() {
         })
         app.post('/products', async(req, res) => {
             const productitem = req.body;
-            console.log(productitem)
             const result = await ProductCollection.insertOne(productitem);
             res.send(result);
         })
         app.put('/products/:id', async(req, res) => {
             const id = req.params.id;
             const item = req.body;
-            console.log(id, item)
             const filter = { _id: new ObjectId(id) }
             const options = { upsert: true };
             const updateitem = {
@@ -91,7 +80,6 @@ async function run() {
 
         app.delete('/cards/:id', async(req, res) => {
             const id = req.params.id;
-            console.log(id)
             const query = { _id: new ObjectId(id) };
             const result = await ProductCollection.deleteOne(query);
             res.send(result)
