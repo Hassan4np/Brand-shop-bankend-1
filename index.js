@@ -30,22 +30,37 @@ async function run() {
         //start out Project-->
 
         app.get('/products', async(req, res) => {
-                const couser = ProductCollection.find();
-                const result = await couser.toArray()
-                res.send(result)
-            })
-            // app.get('/products/:id', async(req, res) => {
-            //     const item = req.params.id;
-            //     // const query = { _id: new ObjectId(item) };
-            //     const query = {
-            //         Brand: item
-            //     };
-            //     const couser = ProductCollection.find(query);
-            //     const result = couser.toArray();
-            //     res.send(result)
+            const couser = ProductCollection.find();
+            const result = await couser.toArray()
+            res.send(result)
+        });
 
-        // })
+        app.get('/products/:Brand', async(req, res) => {
+            const id = req.params.Brand;
+            const query = { Brand: id };
+            const couser = ProductCollection.find(query);
+            const result = await couser.toArray()
+            res.send(result)
+        });
 
+        // app.get('/products/:id', async(req, res) => {
+        //     const id = req.params.id;
+        //     console.log(id)
+        //     const query = { _id: new ObjectId(id) };
+        //     const result = await ProductCollection.findOne(query);
+        //     res.send(result)
+        // });
+        app.get('/cards', async(req, res) => {
+            const couser = ProductCollection.find();
+            const result = await couser.toArray()
+            res.send(result)
+        })
+        app.post('/cards', async(req, res) => {
+            const item = req.body;
+            console.log(item)
+            const result = await ProductCollection.insertOne(item);
+            res.send(result)
+        })
         app.post('/products', async(req, res) => {
             const productitem = req.body;
             console.log(productitem)
@@ -53,6 +68,13 @@ async function run() {
             res.send(result);
         })
 
+        app.delete('/cards/:id', async(req, res) => {
+            const id = req.params.id;
+            console.log(id)
+            const query = { _id: new ObjectId(id) };
+            const result = await ProductCollection.deleteOne(query);
+            res.send(result)
+        })
 
 
 
@@ -67,9 +89,9 @@ async function run() {
 run().catch(console.dir);
 
 
-app.get('/', (req, res) => {
-    res.send('Hello World! i am hassan')
-})
+// app.get('/', (req, res) => {
+//     res.send('Hello World! i am hassan')
+// })
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
