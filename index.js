@@ -24,7 +24,7 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        // await client.connect();
         const database = client.db("productsDB");
         const ProductCollection = database.collection("products");
         //start out Project-->
@@ -48,15 +48,14 @@ async function run() {
         })
         app.post('/cards', async(req, res) => {
             const item = req.body;
-            console.log(item)
             const result = await ProductCollection.insertOne(item);
             res.send(result)
-        })
+        });
         app.post('/products', async(req, res) => {
             const productitem = req.body;
             const result = await ProductCollection.insertOne(productitem);
             res.send(result);
-        })
+        });
         app.put('/products/:id', async(req, res) => {
             const id = req.params.id;
             const item = req.body;
@@ -77,13 +76,20 @@ async function run() {
             res.send(result)
 
         });
+        app.get('/cards/:email', async(req, res) => {
+            const emailid = req.params.email;
+            const query = { email: emailid };
+            const course = ProductCollection.find(query);
+            const result = await course.toArray();
+            res.send(result)
+        });
 
         app.delete('/cards/:id', async(req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
             const result = await ProductCollection.deleteOne(query);
             res.send(result)
-        })
+        });
 
 
 
