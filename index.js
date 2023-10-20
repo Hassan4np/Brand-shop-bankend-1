@@ -34,8 +34,14 @@ async function run() {
             const result = await couser.toArray()
             res.send(result)
         });
-
-        app.get('/products/:id', async(req, res) => {
+        app.get('/products/:Brand', async(req, res) => {
+            const brand = req.params.Brand;
+            const query = { Brand: brand };
+            const course = ProductCollection.find(query);
+            const result = await course.toArray();
+            res.send(result)
+        });
+        app.get('/products/Brand/:id', async(req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
             const result = await ProductCollection.findOne(query);
